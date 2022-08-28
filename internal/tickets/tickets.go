@@ -12,7 +12,7 @@ type Ticket struct {
 // ejemplo 1
 func (ticket Ticket) GetTotalTickets(destination string) (int, error) {
 	var cantPersonas int
-	if destination != "" && destination == ticket.{
+	if destination != "" && destination == ticket.{ 
 
 	}
 	return 0, nil
