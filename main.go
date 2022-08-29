@@ -7,7 +7,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	// "time"
 )
 
 /*************************ESTUCTURAS*************************/
@@ -117,7 +116,7 @@ func (tickets Tickets) GetCountByPeriod(time string) (int, error) {
 	}
 }
 
-/*************************REQUERIMIENTO 2*************************/
+/*************************REQUERIMIENTO 3*************************/
 // método "AverageDestination" (devuelve el porcentaje de personas que viajan a un destino determinado)
 func (tickets Tickets) AverageDestination(destination string) (float64, error) {
 	var totalPersonas int
@@ -212,4 +211,62 @@ func main() {
 			}
 		}
 	*/
+
+	// Ejecución general
+	/**************************************************/
+	/*Posibles escenarios: 						   	  */
+	/*	lugarDestino = ""			(vacio)		      */
+	/*	lugarDestino = "Argentina"	(existente)	      */
+	/*	lugarDestino = "dsada"		(inexistente)     */
+	/*	periodoViaje = "dasdas"		(inexistente)     */
+	/*	periodoViaje = "madrugada"	(existente->0-6)  */
+	/*	periodoViaje = "mañana"		(existente->7-12) */
+	/*	periodoViaje = "tarde"		(existente->13-19)*/
+	/*	periodoViaje = "noche"		(existente->20-23)*/
+	/*	sin archivo csv o archivo vacio				  */
+	/*	todas sus combinaciones						  */
+	/**************************************************/
+
+	fmt.Print("Ingrese un destino: ")
+	var lugarDestino string
+	fmt.Scanln(&lugarDestino)
+
+	fmt.Print("Ingrese un período de viaje: ")
+	var periodoViaje string
+	fmt.Scanln(&periodoViaje)
+
+	totalPersonasPorDestino, errorTotalTicketsPorDestino := data.GetTotalTickets(lugarDestino)
+	totalPersonasPorPeriodo, errorPorPeriodo := data.GetCountByPeriod(periodoViaje)
+	porcentajeDePersonasPorDestino, errorPorcentajeDePersonasPorDestino := data.AverageDestination(lugarDestino)
+
+	if errorTotalTicketsPorDestino != nil {
+		fmt.Println(errorTotalTicketsPorDestino)
+	} else {
+		if totalPersonasPorDestino == 0 {
+			fmt.Println("No hay personas que viajen a ", lugarDestino)
+		} else {
+			fmt.Println("Las personas que viajan a ", lugarDestino, " son ", totalPersonasPorDestino)
+		}
+	}
+
+	if errorPorPeriodo != nil {
+		fmt.Println(errorPorPeriodo)
+	} else {
+		if totalPersonasPorPeriodo == 0 {
+			fmt.Println("No hay personas que viajen a la ", periodoViaje)
+		} else {
+			fmt.Println("Las personas que viajan a la ", periodoViaje, " son ", totalPersonasPorPeriodo)
+		}
+	}
+
+	if errorPorcentajeDePersonasPorDestino != nil {
+		fmt.Println(errorPorcentajeDePersonasPorDestino)
+	} else {
+		if porcentajeDePersonasPorDestino == 0 {
+			fmt.Println("No hay personas que viajen a ", lugarDestino)
+		} else {
+			fmt.Println("Las personas que viajan a ", lugarDestino, " equivalen al ", porcentajeDePersonasPorDestino, " por ciento del total")
+		}
+	}
+
 }
